@@ -2,7 +2,7 @@
 
 env:
   - ACTION=validate
-    SSH_PUBLIC_KEY=fake_for_test
+    SSH_PUBLIC_KEY=${TRAVIS_BUILD_DIR}/fake_for_test
 
 matrix:
   include:
