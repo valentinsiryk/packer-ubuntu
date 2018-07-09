@@ -1,0 +1,16 @@
+---
+
+matrix:
+  include:
+    - dist: trusty
+    - dist: xenial
+
+branches:
+  only:
+    - master
+
+language: bash
+sudo: enabled
+
+script:
+  - sudo cat /proc/cpuinfo | grep -qw vmx && echo "Enabled"
