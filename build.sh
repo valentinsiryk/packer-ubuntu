@@ -6,6 +6,8 @@ cd $SCRIPT_PATH
 export TMPDIR="$SCRIPT_PATH/tmp"
 mkdir -p $TMPDIR
 
+HEADLESS="${HEADLESS:-true}"
+
 VM_NAME="${VM_NAME:-bionic}"
 OUTPUT_DIRECTORY="${OUTPUT_DIRECTORY:-$SCRIPT_PATH/builds/$VM_NAME}"
 
@@ -19,13 +21,14 @@ POST_CPUS="${POST_CPUS:-2}"
 
 ACTION="${ACTION:-build}"
 
+
 packer $ACTION \
     -var "disk_size=20480" \
     -var "vmx_data_memsize=$BUILD_MEM" \
     -var "vmx_data_numvcpus=$BUILD_CPUS" \
     -var "vmx_data_post_memsize=$POST_MEM" \
     -var "vmx_data_post_numvcpus=$POST_CPUS" \
-    -var "headless=false" \
+    -var "headless=$HEADLESS" \
     -var "iso_checksum_type=sha256" \
     -var "iso_name=ubuntu-18.04-server-amd64.iso" \
     -var "mirror=http://cdimage.ubuntu.com" \
