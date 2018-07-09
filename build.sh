@@ -17,7 +17,9 @@ BUILD_CPUS="${BUILD_CPUS:-1}"
 POST_MEM="${POST_MEM:-2048}"
 POST_CPUS="${POST_CPUS:-2}"
 
-packer build \
+ACTION="${ACTION:-build}"
+
+packer $ACTION \
     -var "disk_size=20480" \
     -var "vmx_data_memsize=$BUILD_MEM" \
     -var "vmx_data_numvcpus=$BUILD_CPUS" \

@@ -1,9 +1,12 @@
 ---
 
+env:
+  - ACTION=validate
+
 matrix:
   include:
     - dist: trusty
-    - dist: xenial
+
 
 branches:
   only:
@@ -13,4 +16,4 @@ language: bash
 sudo: enabled
 
 script:
-  - sudo cat /proc/cpuinfo
+  - bash build.sh
