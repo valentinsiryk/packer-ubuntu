@@ -1,0 +1,88 @@
+{
+  "builders": [
+    {
+      "type": "vmware-iso",
+      "version": "14",
+      "boot_command": [
+        "<esc><esc><enter><wait>",
+        "/install/vmlinuz auto console-setup/ask_detect=false console-setup/layoutcode=us console-setup/modelcode=pc105 debconf/frontend=noninteractive",
+        " debian-installer=en_US.UTF-8 fb=false initrd=/install/initrd.gz kbd-chooser/method=us keyboard-configuration/layout=USA",
+        " keyboard-configuration/variant=USA locale=en_US.UTF-8 netcfg/get_domain=unassigned-domain netcfg/get_hostname={{user `vm_name`}}",
+        " grub-installer/bootdev=/dev/sda preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/{{user `preseed_path`}} --",
+        "<wait><enter><wait>"
+      ],
+      "boot_wait": "5s",
+      "disk_size": "{{user `disk_size`}}",
+      "disk_type_id": "0",
+      "guest_os_type": "ubuntu-64",
+      "headless": "{{user `headless`}}",
+      "http_directory": "http",
+      "iso_checksum_url": "{{user `mirror`}}/{{user `mirror_directory`}}/SHA256SUMS",
+      "iso_checksum_type": "{{user `iso_checksum_type`}}",
+      "iso_url": "{{user `mirror`}}/{{user `mirror_directory`}}/{{user `iso_name`}}",
+      "output_directory": "{{user `output_directory`}}",
+      "shutdown_command": "echo {{user `ssh_username`}} | sudo -S shutdown -P now",
+      "ssh_password": "{{user `ssh_username`}}",
+      "ssh_port": 22,
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_wait_timeout": "3600s",
+      "tools_upload_flavor": "linux",
+      "vm_name": "{{user `vm_name`}}",
+      "vmdk_name": "{{user `vm_name`}}",
+      "vmx_data": {
+        "displayname": "{{user `vm_name`}}",
+        "memsize": "{{user `vmx_data_memsize`}}",
+        "numvcpus": "{{user `vmx_data_numvcpus`}}",
+        "vvtd.enable": "TRUE",
+        "sched.mem.pshare.enable": "FALSE",
+        "monitor.virtual_mmu": "hardware",
+        "monitor.virtual_exec": "hardware",
+        "MemTrimRate": "0",
+        "vhv.enable": "FALSE",
+        "cpuid.coresPerSocket": "{{user `vmx_data_numvcpus`}}",
+        "tools.syncTime": "TRUE",
+        "isolation.tools.copy.disable": "TRUE",
+        "isolation.tools.dnd.disable": "TRUE",
+        "isolation.tools.paste.disable": "TRUE"
+      },
+      "vmx_data_post": {
+        "vmx.buildType": "release",
+        "cpuid.coresPerSocket": "{{user `vmx_data_post_numvcpus`}}",
+        "memsize": "{{user `vmx_data_post_memsize`}}",
+        "numvcpus": "{{user `vmx_data_post_numvcpus`}}"
+      },
+      "vmx_remove_ethernet_interfaces": false,
+      "vnc_bind_address": "0.0.0.0",
+      "vnc_port_min": "5990",
+      "vnc_port_max": "5999"
+    }
+  ],
+  "provisioners": [
+    {
+      "source": "{{user `ssh_public_key_file`}}",
+      "destination": "{{user `ssh_public_key_file_tmp_path`}}",
+      "type": "file"
+    },
+    {
+      "environment_vars": [
+        "HOME_DIR=/home/{{user `ssh_username`}}",
+        "CLEANUP={{user `cleanup_os`}}",
+        "SHRINK={{user `shrink_image`}}",
+        "ADMIN_USER={{user `ssh_username`}}",
+        "SSH_PUBLIC_KEY_FILE_TMP_PATH={{user `ssh_public_key_file_tmp_path`}}"
+      ],
+      "execute_command": "echo {{user `ssh_username`}} | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "scripts/update.sh",
+        "scripts/ssh.sh",
+        "scripts/networking.sh",
+        "scripts/sudoers.sh",
+        "scripts/vmware.sh",
+        "scripts/cleanup.sh",
+        "scripts/shrink.sh"
+      ],
+      "type": "shell"
+    }
+  ]
+}
