@@ -13,4 +13,4 @@ language: bash
 sudo: enabled
 
 script:
-  - sudo cat /proc/cpuinfo | grep -qw vmx && echo "Enabled"
+  - sudo cat /proc/cpuinfo
