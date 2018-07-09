@@ -2,6 +2,7 @@
 
 env:
   - ACTION=validate
+    SSH_PUBLIC_KEY=fake_for_test
 
 matrix:
   include:
@@ -16,4 +17,4 @@ language: bash
 sudo: enabled
 
 script:
-  - bash build.sh
+  - touch $SSH_PUBLIC_KEY && bash build.sh
