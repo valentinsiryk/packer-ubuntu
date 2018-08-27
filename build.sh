@@ -30,9 +30,9 @@ packer $ACTION \
     -var "vmx_data_post_numvcpus=$POST_CPUS" \
     -var "headless=$HEADLESS" \
     -var "iso_checksum_type=sha256" \
-    -var "iso_name=ubuntu-18.04-server-amd64.iso" \
+    -var "iso_name=ubuntu-18.04.1-server-amd64.iso" \
     -var "mirror=http://cdimage.ubuntu.com" \
-    -var "mirror_directory=ubuntu/releases/18.04/release" \
+    -var "mirror_directory=ubuntu/releases/18.04.1/release" \
     -var "preseed_path=preseed.cfg" \
     -var "vm_name=$VM_NAME" \
     -var "ssh_username=ubuntu" \
