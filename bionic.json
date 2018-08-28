@@ -46,7 +46,6 @@
         "isolation.tools.paste.disable": "TRUE"
       },
       "vmx_data_post": {
-        "vmx.buildType": "release",
         "cpuid.coresPerSocket": "{{user `vmx_data_post_numvcpus`}}",
         "memsize": "{{user `vmx_data_post_memsize`}}",
         "numvcpus": "{{user `vmx_data_post_numvcpus`}}"
